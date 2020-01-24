@@ -19,8 +19,8 @@ spec:
     command:
     - cat
     tty: true
-  - name: golang
-    image: golang:1.8.0
+  - name: docker
+    image: docker
     command:
     - cat
     tty: true
