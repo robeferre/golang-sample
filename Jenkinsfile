@@ -6,11 +6,13 @@ apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    some-label: some-label-value
+    docker: true
 spec:
   containers:
-  - name: maven
-    image: maven:alpine
+  - name: docker
+    image: docker:latest
+    privileged: true
+    workingDir: '/home/jenkins/agent'
     command:
     - cat
     tty: true
@@ -28,8 +30,8 @@ spec:
         container('maven') {
           sh 'mvn -version'
         }
-        container('busybox') {
-          sh '/bin/busybox'
+        container('docker') {
+          sh 'docker ps'
         }
       }
     }
