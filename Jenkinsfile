@@ -59,8 +59,25 @@ spec:
     }
 
     stage('Load test') {
-      steps {
-        sh 'ls'
+      parallel {
+        stage('Load test') {
+          steps {
+            sh 'ls'
+          }
+        }
+
+        stage('Security test') {
+          steps {
+            sh 'ls'
+          }
+        }
+
+        stage('Integration test') {
+          steps {
+            sh 'ls'
+          }
+        }
+
       }
     }
 
