@@ -4,9 +4,6 @@ pipeline {
       yamlFile 'infra/K8sJenkinsPod.yaml'
     }
   }
-  environment {
-        CI = 'true'
-  }
   stages {
     stage('Build') {
       steps {
