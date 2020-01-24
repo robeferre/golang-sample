@@ -8,14 +8,19 @@ metadata:
   labels:
     some-label: some-label-value
 spec:
+  volumes:
+  - name: docker
+    hostPathVolume:
+      hostPath: '/var/run/docker.sock'
+      mountPath: '/var/run/docker.sock'
   containers:
   - name: maven
     image: maven:alpine
     command:
     - cat
     tty: true
-  - name: docker
-    image: docker
+  - name: golang
+    image: golang:1.8.0
     command:
     - cat
     tty: true
