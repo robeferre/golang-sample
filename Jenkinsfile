@@ -43,7 +43,7 @@ spec:
   }
   stages {
     stage('Build with Kaniko') {
-      steps {
+      steps('Kaniko execution'){
         sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=robeferre/golang-sample'
       }
     }
