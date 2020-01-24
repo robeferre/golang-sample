@@ -7,6 +7,10 @@ kind: Pod
 metadata:
   labels:
     some-label: some-label-value
+volumes:
+  - hostPathVolume
+      hostPath: '/var/run/docker.sock'
+      mountPath: '/var/run/docker.sock'
 spec:
   containers:
   - name: maven
@@ -19,6 +23,7 @@ spec:
     command:
     - cat
     tty: true
+    privileged: true
 """
     }
   }
