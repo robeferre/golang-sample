@@ -1,41 +1,38 @@
 pipeline {
   agent {
     kubernetes {
+      //cloud 'kubernetes'
+      defaultContainer 'kaniko'
       yaml """
-apiVersion: v1
 kind: Pod
-metadata:
-  labels:
-    some-label: some-label-value
 spec:
-  volumes:
-  - name: docker
-    hostPathVolume:
-      hostPath: '/var/run/docker.sock'
-      mountPath: '/var/run/docker.sock'
   containers:
-  - name: maven
-    image: maven:alpine
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug-539ddefcae3fd6b411a95982a830d987f4214251
+    imagePullPolicy: Always
     command:
-    - cat
+    - /busybox/cat
     tty: true
-  - name: docker
-    image: docker
-    command:
-    - cat
-    tty: true
+    volumeMounts:
+      - name: jenkins-docker-cfg
+        mountPath: /kaniko/.docker
+  volumes:
+  - name: jenkins-docker-cfg
+    projected:
+      sources:
+      - secret:
+          name: regcred
+          items:
+            - key: .dockerconfigjson
+              path: config.json
 """
     }
   }
   stages {
-    stage('Run maven') {
+    stage('Build with Kaniko') {
       steps {
-        container('maven') {
-          sh 'mvn -version'
-        }
-        container('docker') {
-          sh 'docker ps'
-        }
+        git 'https://github.com/jenkinsci/docker-jnlp-slave.git'
+        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=mydockerregistry:5000/myorg/myimage'
       }
     }
   }
