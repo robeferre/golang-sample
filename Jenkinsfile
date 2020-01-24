@@ -58,5 +58,11 @@ spec:
       }
     }
 
+    stage('Load test') {
+      steps {
+        sh 'ls'
+      }
+    }
+
   }
 }
