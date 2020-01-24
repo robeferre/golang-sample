@@ -81,5 +81,17 @@ spec:
       }
     }
 
+    stage('Open PR') {
+      steps {
+        sh 'ls'
+      }
+    }
+
+    stage('Deploy Prod') {
+      steps {
+        sh 'ls'
+      }
+    }
+
   }
 }
