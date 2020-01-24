@@ -93,11 +93,5 @@ spec:
       }
     }
 
-    stage('Deploy Prod') {
-      steps {
-        sh 'ls'
-      }
-    }
-
   }
 }
