@@ -42,9 +42,19 @@ spec:
     }
   }
   stages {
+    stage('Sonar execution') {
+      steps {
+        sh 'ls'
+      }
+    }
     stage('Build with Kaniko') {
       steps('Kaniko execution'){
         sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=robeferre/golang-sample'
+      }
+    }
+    stage('Deploy Development') {
+      steps {
+        sh 'ls'
       }
     }
   }
