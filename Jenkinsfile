@@ -1,38 +1,36 @@
 pipeline {
   agent {
     kubernetes {
-      //cloud 'kubernetes'
-      defaultContainer 'kaniko'
       yaml """
+apiVersion: v1
 kind: Pod
+metadata:
+  labels:
+    some-label: some-label-value
 spec:
   containers:
-  - name: kaniko
-    image: gcr.io/kaniko-project/executor:debug-539ddefcae3fd6b411a95982a830d987f4214251
-    imagePullPolicy: Always
+  - name: maven
+    image: maven:alpine
     command:
-    - /busybox/cat
+    - cat
     tty: true
-    volumeMounts:
-      - name: jenkins-docker-cfg
-        mountPath: /kaniko/.docker
-  volumes:
-  - name: jenkins-docker-cfg
-    projected:
-      sources:
-      - secret:
-          name: regcred
-          items:
-            - key: .dockerconfigjson
-              path: config.json
+  - name: busybox
+    image: busybox
+    command:
+    - cat
+    tty: true
 """
     }
   }
   stages {
-    stage('Build with Kaniko') {
+    stage('Run maven') {
       steps {
-        git 'https://github.com/jenkinsci/docker-jnlp-slave.git'
-        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=mydockerregistry:5000/myorg/myimage'
+        container('maven') {
+          sh 'mvn -version'
+        }
+        container('busybox') {
+          sh '/bin/busybox'
+        }
       }
     }
   }
