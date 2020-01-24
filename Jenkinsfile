@@ -44,7 +44,6 @@ spec:
   stages {
     stage('Build with Kaniko') {
       steps {
-        git 'https://github.com/robeferre/golang-sample.git'
         sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=robeferre/golang-sample'
       }
     }
