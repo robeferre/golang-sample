@@ -37,6 +37,12 @@ spec:
           }
         }
 
+        stage('Unit tests') {
+          steps {
+            sh 'ls'
+          }
+        }
+
         stage('Sonar scan') {
           steps {
             sh 'ls'
@@ -46,7 +52,7 @@ spec:
       }
     }
 
-    stage('Push image') {
+    stage('Push to registry') {
       steps {
         sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=robeferre/golang-sample'
       }
@@ -58,7 +64,7 @@ spec:
       }
     }
 
-    stage('Load test') {
+    stage('Tests') {
       parallel {
         stage('Load test') {
           steps {
