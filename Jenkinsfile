@@ -12,12 +12,12 @@ spec:
   - name: docker
     image: docker:latest
     privileged: true
-    workingDir: '/home/jenkins/agent'
+    workingDir: '/home/jenkins/agent',
     command:
     - cat
     tty: true
-  - name: busybox
-    image: busybox
+  - name: maven
+    image: maven:alpine
     command:
     - cat
     tty: true
