@@ -6,18 +6,16 @@ apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    docker: true
+    some-label: some-label-value
 spec:
   containers:
-  - name: docker
-    image: docker:latest
-    privileged: true
-    workingDir: '/home/jenkins/agent',
+  - name: maven
+    image: maven:alpine
     command:
     - cat
     tty: true
-  - name: maven
-    image: maven:alpine
+  - name: docker
+    image: docker
     command:
     - cat
     tty: true
